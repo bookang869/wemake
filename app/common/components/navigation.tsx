@@ -10,7 +10,28 @@ import {
   navigationMenuTriggerStyle,
 } from "~/common/components/ui/navigation-menu";
 import { cn } from "~/lib/utils";
+import { Button } from "./ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuGroup,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import {
+  BarChart3Icon,
+  BellIcon,
+  LogOutIcon,
+  MessageCircleIcon,
+  SettingsIcon,
+  UserIcon,
+} from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { useState } from "react";
 
+// Main navigation menu structure
 const menus = [
   {
     name: "Products",
@@ -122,44 +143,54 @@ const menus = [
   },
 ];
 
-// className is used for Tailwind CSS
-export default function Navigation() {
+// Navigation component for the main app bar
+export default function Navigation({
+  isLoggedIn,
+  hasNotifications,
+  hasMessages,
+}: {
+  isLoggedIn: boolean;
+  hasNotifications: boolean;
+  hasMessages: boolean;
+}) {
   return (
+    // Main navigation container, fixed at the top
     <nav className="flex px-20 h-16 items-center justify-between backdrop-blur fixed top-0 left-0 right-0 z-50 bg-background/50">
+      {/* Left section: Logo and main menu */}
       <div className="flex items-center gap-2">
+        {/* App logo/title */}
         <Link to="/" className="font-bold tracking-tighter text-lg">
           wemake
         </Link>
+        {/* Vertical separator between logo and menu */}
         <Separator orientation="vertical" className="!h-6 mx-4" />
+        {/* Main navigation menu */}
         <NavigationMenu>
           <NavigationMenuList>
             {menus.map((menu) => (
               <NavigationMenuItem key={menu.name}>
                 {menu.items ? (
                   <>
+                    {/* Top-level menu trigger, links to main section */}
                     <Link to={menu.to}>
                       <NavigationMenuTrigger>{menu.name}</NavigationMenuTrigger>
                     </Link>
+                    {/* Dropdown content for menu with sub-items */}
                     <NavigationMenuContent>
                       <ul className="grid w-[600px] font-light gap-3 p-4 grid-cols-3">
                         {menu.items?.map((item) => (
                           <NavigationMenuItem
                             key={item.name}
-                            // cn -> conditional for shadcn
-                            // condition is false, then the result is the first argument
-                            // condition1,
-                            // condition2,
-                            // condition3,
-                            // ...
+                            // Highlight special items with different styles
                             className={cn([
                               "select-none rounded-md transition-colors hover:bg-accent focus:bg-accent",
-                              item.to === "/products/promote" &&
-                                "col-span-2 bg-primary/10 hover:bg-primary/20 focus:bg-primary/20",
-                              item.to === "/jobs/submit" &&
-                                "col-span-2 bg-primary/10 hover:bg-primary/20 focus:bg-primary/20",
+                              item.to === "/products/promote" ||
+                                (item.to === "/jobs/submit" &&
+                                  "col-span-2 bg-primary/10 hover:bg-primary/20 focus:bg-primary/20"),
                             ])}
                           >
                             <NavigationMenuLink asChild>
+                              {/* Sub-menu item link */}
                               <Link
                                 className="p-3 space-y-1 block leading-none no-underline outline-none"
                                 to={item.to}
@@ -178,6 +209,7 @@ export default function Navigation() {
                     </NavigationMenuContent>
                   </>
                 ) : (
+                  // Single menu item without dropdown
                   <Link className={navigationMenuTriggerStyle()} to={menu.to}>
                     {menu.name}
                   </Link>
@@ -187,6 +219,89 @@ export default function Navigation() {
           </NavigationMenuList>
         </NavigationMenu>
       </div>
+      {/* Right section: User actions (notifications, messages, profile) */}
+      {isLoggedIn ? (
+        <div className="flex items-center gap-2">
+          {/* Notifications button with badge */}
+          <Button size="icon" variant="ghost" asChild className="relative">
+            <Link to="/my/notifications">
+              <BellIcon className="size-4" />
+              {hasNotifications && (
+                <span className="absolute top-1.5 right-1.5 bg-red-500 text-white rounded-full size-2">
+                  {hasNotifications}
+                </span>
+              )}
+            </Link>
+          </Button>
+          {/* Messages button with badge */}
+          <Button size="icon" variant="ghost" asChild className="relative">
+            <Link to="/my/messages">
+              <MessageCircleIcon className="size-4" />
+              {hasMessages && (
+                <span className="absolute top-1.5 right-1.5 bg-red-500 text-white rounded-full size-2">
+                  {hasMessages}
+                </span>
+              )}
+            </Link>
+          </Button>
+          {/* User profile dropdown menu */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Avatar>
+                <AvatarImage src="https://github.com/bookang869.png" />
+                <AvatarFallback>N</AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56">
+              {/* User info at the top of dropdown */}
+              <DropdownMenuLabel className="flex flex-col">
+                <span className="font-medium">John Doe</span>
+                <span className="text-xs text-muted-foreground">@username</span>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {/* Profile-related actions */}
+              <DropdownMenuGroup>
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link to="/my/dashboard">
+                    <BarChart3Icon className="size-4 mr-2" />
+                    Dashboard
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link to="/my/profile">
+                    <UserIcon className="size-4 mr-2" />
+                    Profile
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link to="/my/settings">
+                    <SettingsIcon className="size-4 mr-2" />
+                    Settings
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              {/* Logout action */}
+              <DropdownMenuItem asChild className="cursor-pointer">
+                <Link to="/auth/logout">
+                  <LogOutIcon className="size-4 mr-2" />
+                  Logout
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      ) : (
+        // If not logged in, show login/join buttons
+        <div className="flex items-center gap-4">
+          <Button asChild variant="secondary">
+            <Link to="/auth/login">Login</Link>
+          </Button>
+          <Button asChild>
+            <Link to="/auth/join">Join</Link>
+          </Button>
+        </div>
+      )}
     </nav>
   );
 }
