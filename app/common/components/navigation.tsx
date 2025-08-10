@@ -184,9 +184,9 @@ export default function Navigation({
                             // Highlight special items with different styles
                             className={cn([
                               "select-none rounded-md transition-colors hover:bg-accent focus:bg-accent",
-                              item.to === "/products/promote" ||
-                                (item.to === "/jobs/submit" &&
-                                  "col-span-2 bg-primary/10 hover:bg-primary/20 focus:bg-primary/20"),
+                              (item.to === "/products/promote" ||
+                                item.to === "/jobs/submit") &&
+                                "col-span-2 bg-primary/10 hover:bg-primary/20 focus:bg-primary/20",
                             ])}
                           >
                             <NavigationMenuLink asChild>
