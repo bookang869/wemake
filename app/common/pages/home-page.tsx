@@ -3,6 +3,7 @@ import { ProductCard } from "~/features/products/components/product-card";
 import { PostCard } from "~/features/community/components/post-card";
 import { IdeaCard } from "~/features/ideas/components/idea-card";
 import { JobCard } from "~/features/jobs/components/job-card";
+import { Team } from "~/features/teams/components/team";
 import { Link } from "react-router";
 import { Button } from "~/common/components/ui/button";
 import {
@@ -14,6 +15,11 @@ import {
 } from "../components/ui/card";
 import { DotIcon, EyeIcon, HeartIcon } from "lucide-react";
 import { Badge } from "~/common/components/ui/badge";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "~/common/components/ui/avatar";
 
 export const meta: MetaFunction = () => [
   { title: "Home | wemake" },
@@ -115,6 +121,32 @@ export default function HomePage() {
             location="Remote"
             salaryRange="$100,000 - $120,000"
             jobLocation="San Francisco, CA"
+          />
+        ))}
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        <div>
+          <h2 className="text-5xl font-bold leading-tight tracking-tight">
+            Find a teammate
+          </h2>
+          <p className="text-lg font-light text-foreground">
+            Join a team looking for a new member.
+          </p>
+          <Button variant="link" asChild className="text-lg p-0">
+            <Link to="/jobs">Explore all teams &rarr;</Link>
+          </Button>
+        </div>
+        {Array.from({ length: 5 }).map((_, index) => (
+          <Team
+            id="teamId"
+            username="lynn"
+            userAvatar="https://github.com/inthetiger.png"
+            lookingFor={[
+              "React Developer",
+              "Backend Developer",
+              "Product Manager",
+            ]}
+            projectDescription="a new social media platform."
           />
         ))}
       </div>
