@@ -26,7 +26,7 @@ export const meta: MetaFunction = () => [
 // latest version of react-router creates a type for every file in the routes.ts file
 export default function HomePage() {
   return (
-    <div className="px-20 space-y-40">
+    <div className="space-y-40">
       <div className="grid grid-cols-3 gap-4">
         <div>
           <h2 className="text-5xl font-bold leading-tight tracking-tight">
