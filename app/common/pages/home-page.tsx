@@ -6,26 +6,24 @@ import { JobCard } from "~/features/jobs/components/job-card";
 import { Team } from "~/features/teams/components/team";
 import { Link } from "react-router";
 import { Button } from "~/common/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/card";
-import { DotIcon, EyeIcon, HeartIcon } from "lucide-react";
-import { Badge } from "~/common/components/ui/badge";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "~/common/components/ui/avatar";
+import type { Route } from "./+types/home-page";
 
 export const meta: MetaFunction = () => [
   { title: "Home | wemake" },
   { name: "description", content: "Welcome to wemake" },
 ];
 
+// the loader is used to fetch data from the database and pass it to the component as props
+// runs in the server, not in the browser
+// export const loader = () => {
+//   return {
+//     hello: "world",
+//     hello2: "world2",
+//   };
+// };
+
+// the loader's return value is passed to the component as props
+// latest version of react-router creates a type for every file in the routes.ts file
 export default function HomePage() {
   return (
     <div className="px-20 space-y-40">
