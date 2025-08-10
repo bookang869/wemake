@@ -2,6 +2,7 @@ import type { MetaFunction } from "react-router";
 import { ProductCard } from "~/features/products/components/product-card";
 import { PostCard } from "~/features/community/components/post-card";
 import { IdeaCard } from "~/features/ideas/components/idea-card";
+import { JobCard } from "~/features/jobs/components/job-card";
 import { Link } from "react-router";
 import { Button } from "~/common/components/ui/button";
 import {
@@ -12,6 +13,7 @@ import {
   CardTitle,
 } from "../components/ui/card";
 import { DotIcon, EyeIcon, HeartIcon } from "lucide-react";
+import { Badge } from "~/common/components/ui/badge";
 
 export const meta: MetaFunction = () => [
   { title: "Home | wemake" },
@@ -87,6 +89,32 @@ export default function HomePage() {
             likeCount={456}
             timeAgo="12 hours ago"
             claimed={index % 2 === 0}
+          />
+        ))}
+      </div>
+      <div className="grid grid-cols-4 gap-4">
+        <div>
+          <h2 className="text-5xl font-bold leading-tight tracking-tight">
+            Latest Jobs
+          </h2>
+          <p className="text-lg font-light text-foreground">
+            Find your dream job.
+          </p>
+          <Button variant="link" asChild className="text-lg p-0">
+            <Link to="/jobs">Explore all jobs &rarr;</Link>
+          </Button>
+        </div>
+        {Array.from({ length: 11 }).map((_, index) => (
+          <JobCard
+            id="jobId"
+            companyName="Meta"
+            companyLogo="https://github.com/facebook.png"
+            jobTitle="Software Engineer"
+            timeAgo="12 hours ago"
+            jobType="Full-time"
+            location="Remote"
+            salaryRange="$100,000 - $120,000"
+            jobLocation="San Francisco, CA"
           />
         ))}
       </div>
